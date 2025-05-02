@@ -80,5 +80,4 @@
 
 #### Технологии: #### 
 
-Java 17+, Spring Boot, Spring Security, Spring Data JPA(Hibernate), PostgreSQL/MySQL, Liquibase, Docker, OpenAPI (
-Swagger)
+Java 17+, Spring Boot, Spring Security, Spring Data JPA(Hibernate), PostgreSQL/MySQL, Liquibase, Docker, OpenAPI(Swagger)
