@@ -23,10 +23,13 @@ public class Card {
     Date expirationDate;
 
     @Column(name = "status")
-    CardStatus status;
+    CardStatus status = CardStatus.ACTIVE;
 
     @Column(name = "balance")
     Long balance;
+
+    @Column(name = "card_blocking_request")
+    boolean blocking = false;
 
     public Card() {
     }

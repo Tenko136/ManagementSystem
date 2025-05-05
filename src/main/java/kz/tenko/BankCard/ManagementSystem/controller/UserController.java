@@ -16,7 +16,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/find-user")
+    @GetMapping("/find-users")
     public List<User> findUsers() {
         return userService.findUsers();
     }

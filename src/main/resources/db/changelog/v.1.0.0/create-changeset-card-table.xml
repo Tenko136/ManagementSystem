@@ -24,6 +24,9 @@
             <column name="balance" type="bigint">
                 <constraints nullable="true"/>
             </column>
+            <column name="card_blocking_request" type="boolean">
+                <constraints nullable="true"/>
+            </column>
         </createTable>
     </changeSet>
 </databaseChangeLog>
