@@ -1,19 +1,18 @@
 package kz.tenko.BankCard.ManagementSystem.service;
 
-import org.springframework.stereotype.Service;
+
+import kz.tenko.BankCard.ManagementSystem.entity.User;
 
 import java.util.List;
-import java.util.Map;
 
 
 public interface UserService {
 
-    public void cardBlockRequest();
+    List<User> findUsers();
+ void saveUser(User user);
 
-    public String moneyTransfer();
+ void deleteUser(long userId);
 
-    public List<String> getCards();
 
-    public Map<String, Integer> getBalance();
 }
 

@@ -1,13 +1,10 @@
 package kz.tenko.BankCard.ManagementSystem.controller;
 
-import kz.tenko.BankCard.ManagementSystem.DTO.UserInfoDTO;
+import kz.tenko.BankCard.ManagementSystem.entity.User;
 import kz.tenko.BankCard.ManagementSystem.service.UserService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("/user")
@@ -19,10 +16,19 @@ public class UserController {
         this.userService = userService;
     }
 
-    @GetMapping("/all-user")
-    public List<UserInfoDTO> getAllUsers() {
-        return null;
+    @GetMapping("/find-user")
+    public List<User> findUsers() {
+        return userService.findUsers();
     }
 
+    @PostMapping("/save-user")
+    public void saveUser(@RequestBody User user) {
+        userService.saveUser(user);
+    }
+
+    @DeleteMapping("/delete-user/{id}")
+    public void deleteUser(@PathVariable long id) {
+        userService.deleteUser(id);
+    }
 
 }

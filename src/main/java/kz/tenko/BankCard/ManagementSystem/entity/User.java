@@ -1,10 +1,9 @@
 package kz.tenko.BankCard.ManagementSystem.entity;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
+import jakarta.persistence.*;
 
+@Entity
+@Table(name = "user")
 public class User {
 
     @Id
@@ -14,10 +13,6 @@ public class User {
 
     @Column(name = "name")
     String name;
-
-    // todo
-//    @Column(name = "is_admin")
-//    boolean isAdmin;
 
     public User() {
     }
