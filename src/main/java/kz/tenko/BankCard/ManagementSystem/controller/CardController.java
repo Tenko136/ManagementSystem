@@ -2,6 +2,8 @@ package kz.tenko.BankCard.ManagementSystem.controller;
 
 import kz.tenko.BankCard.ManagementSystem.entity.Card;
 import kz.tenko.BankCard.ManagementSystem.service.CardService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -38,10 +40,13 @@ public class CardController {
         cardService.cardBlockingRequest(cardNumber);
     }
 
-
     @PostMapping("/transfer")
-    public void transferAmount(String cardFrom, String cardTo, long transferAmount) {
-        cardService.transferAmount(cardFrom, cardTo, transferAmount);
-
+    public ResponseEntity<?> transferAmount(String cardFrom, String cardTo, long transferAmount) {
+        try {
+            cardService.transferAmount(cardFrom, cardTo, transferAmount);
+        } catch (RuntimeException e) {
+            return ResponseEntity.status(HttpStatus.NOT_ACCEPTABLE).body(e.getMessage());
+        }
+        return ResponseEntity.status(HttpStatus.OK).build();
     }
 }
