@@ -33,8 +33,21 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public void cardBlockingRequest(boolean cardBlocking) {
-        cardDAO.blockingCard(cardBlocking);
+    @Transactional
+    public void cardBlockingRequest(String cardNumber) {
+        cardDAO.blockingCard(cardNumber);
+    }
+
+    //todo вывод в контроллере http ответ
+    @Override
+    @Transactional
+    public void transferAmount(String cardFrom, String cardTo, long transferAmount) {
+        long from = cardDAO.findBalance(cardFrom);
+        if ((from - transferAmount) < 0) {
+            throw new RuntimeException("Недостаточно средств");
+        }
+        cardDAO.changeBalance(cardFrom, -transferAmount);
+        cardDAO.changeBalance(cardTo, transferAmount);
     }
 
 

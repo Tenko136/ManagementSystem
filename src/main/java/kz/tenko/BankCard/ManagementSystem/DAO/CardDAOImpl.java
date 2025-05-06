@@ -41,10 +41,23 @@ public class CardDAOImpl implements CardDAO {
     }
 
     @Override
-    public void blockingCard(boolean cardBlocking) {
-        Query query = entityManager.createQuery("from Card where blocking =:cardBlocking");
-        query.setParameter("cardBlocking", cardBlocking);
+    public void blockingCard(String cardNumber) {
+        Query query = entityManager.createQuery("update Card set cardBlockingRequest = true where number =:cardNumber");
+        query.setParameter("cardNumber", cardNumber);
+        query.executeUpdate();
     }
 
+    @Override
+    public Long findBalance(String number) {
+        Card card = entityManager.find(Card.class, number);
+        return card.getBalance();
+    }
 
+    @Override
+    public void changeBalance(String number, Long amount) {
+        Query query = entityManager.createQuery("update Card set balance = balance + :amount where number = :number");
+        query.setParameter("amount", amount);
+        query.setParameter("number", number);
+        query.executeUpdate();
+    }
 }

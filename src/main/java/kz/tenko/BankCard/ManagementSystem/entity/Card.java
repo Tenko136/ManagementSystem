@@ -1,7 +1,13 @@
 package kz.tenko.BankCard.ManagementSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
+import org.hibernate.annotations.JdbcType;
+import org.hibernate.annotations.Type;
+import org.hibernate.type.descriptor.jdbc.LongVarcharJdbcType;
+import org.springframework.format.annotation.DateTimeFormat;
 
+import java.time.LocalDate;
 import java.util.Date;
 
 @Entity
@@ -11,30 +17,31 @@ public class Card {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
-    Long id;
+    private Long id;
 
     @Column(name = "user_id")
-    Long userId;
+    private Long userId;
 
     @Column(name = "number")
-    String number;
+    private String number;
 
     @Column(name = "expiration_date")
-    Date expirationDate;
+    private LocalDate expirationDate;
 
     @Column(name = "status")
-    CardStatus status = CardStatus.ACTIVE;
+    @JdbcType(LongVarcharJdbcType.class)
+    private CardStatus status;
 
     @Column(name = "balance")
-    Long balance;
+    private Long balance;
 
     @Column(name = "card_blocking_request")
-    boolean blocking = false;
+    boolean cardBlockingRequest;
 
     public Card() {
     }
 
-    public Card(Long userId, String number, Date expirationDate, CardStatus status, Long balance) {
+    public Card(Long userId, String number, LocalDate expirationDate, CardStatus status, Long balance) {
         this.userId = userId;
         this.number = number;
         this.expirationDate = expirationDate;
@@ -66,11 +73,11 @@ public class Card {
         this.number = number;
     }
 
-    public Date getExpirationDate() {
+    public LocalDate getExpirationDate() {
         return expirationDate;
     }
 
-    public void setExpirationDate(Date expirationDate) {
+    public void setExpirationDate(LocalDate expirationDate) {
         this.expirationDate = expirationDate;
     }
 

@@ -33,16 +33,15 @@ public class CardController {
         cardService.deleteCard(id);
     }
 
-    //todo
     @PostMapping("/card-blocking-request")
-    public void cardBlockingRequest(boolean cardBlocking) {  // клиент - запрос
-        cardService.cardBlockingRequest(cardBlocking);
+    public void cardBlockingRequest(String cardNumber) {  // клиент - запрос
+        cardService.cardBlockingRequest(cardNumber);
     }
 
-    //todo
+
     @PostMapping("/transfer")
-    public void balanceTransfer() {
+    public void transferAmount(String cardFrom, String cardTo, long transferAmount) {
+        cardService.transferAmount(cardFrom, cardTo, transferAmount);
 
     }
-
 }

@@ -13,7 +13,7 @@
                 <constraints nullable="false"/>
             </column>
             <column name="number" type="varchar(20)">
-                <constraints nullable="false"/>
+                <constraints nullable="false" unique="true"/>
             </column>
             <column name="expiration_date" type="date">
                 <constraints nullable="false"/>

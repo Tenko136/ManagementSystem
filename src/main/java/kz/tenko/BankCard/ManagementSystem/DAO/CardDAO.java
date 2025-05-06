@@ -7,7 +7,14 @@ import java.util.List;
 public interface CardDAO {
 
     void saveCard(Card card);
+
     List<Card> findCards();
+
     void deleteCard(long id);
-    void blockingCard(boolean cardBlocking);
+
+    void blockingCard(String cardNumber);
+
+    Long findBalance(String number);
+
+    void changeBalance(String number, Long amount);
 }
