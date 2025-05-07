@@ -8,6 +8,8 @@ public interface UserDAO {
 
     List<User> findUsers();
 
+    User findUserByEmail(String email);
+
     void saveUser(User user);
 
     void deleteUser(long id);

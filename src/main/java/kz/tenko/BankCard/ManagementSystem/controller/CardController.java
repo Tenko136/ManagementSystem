@@ -4,6 +4,7 @@ import kz.tenko.BankCard.ManagementSystem.entity.Card;
 import kz.tenko.BankCard.ManagementSystem.service.CardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -19,7 +20,8 @@ public class CardController {
         this.cardService = cardService;
     }
 
-
+    //SecurityContextHolder.getContext().getAuthentication()
+    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/find-cards")
     public List<Card> findAllCards() {   // для админов - все + баланс, для клиентов - только свои + баланс
         return cardService.findCards();

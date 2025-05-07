@@ -14,10 +14,14 @@ public class CardServiceImpl implements CardService {
     @Autowired
     private CardDAO cardDAO;
 
+    //todo
     @Override
     @Transactional
     public void saveCard(Card card) {
-        cardDAO.saveCard(card);
+        card.setNumber(card.getNumber().replaceAll("\\D", ""));
+        if (card.getNumber().matches("[0-9]{16}")) {
+            cardDAO.saveCard(card);
+        }
     }
 
     @Override
@@ -38,7 +42,6 @@ public class CardServiceImpl implements CardService {
         cardDAO.blockingCard(cardNumber);
     }
 
-    //todo вывод в контроллере http ответ
     @Override
     @Transactional
     public void transferAmount(String cardFrom, String cardTo, long transferAmount) {

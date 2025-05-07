@@ -27,6 +27,9 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void saveUser(User user) {
+        if (userDAO.findUserByEmail(user.getEmail()) != null) {
+            throw new RuntimeException("Error: Username is already taken!");
+        }
         userDAO.saveUser(user);
     }
 

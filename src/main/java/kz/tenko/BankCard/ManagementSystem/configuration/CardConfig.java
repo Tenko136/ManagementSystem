@@ -1,4 +1,4 @@
-package kz.tenko.BankCard.ManagementSystem.confuguration;
+package kz.tenko.BankCard.ManagementSystem.configuration;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

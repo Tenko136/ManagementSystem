@@ -4,6 +4,7 @@ import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
 import kz.tenko.BankCard.ManagementSystem.entity.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -16,6 +17,17 @@ public class UserDAOImpl implements UserDAO {
 
     public UserDAOImpl(EntityManager entityManager) {
         this.entityManager = entityManager;
+    }
+
+    @Override
+    public User findUserByEmail(String email) {
+        Query query = entityManager.createQuery("from User where email = :email");
+        query.setParameter("email", email);
+        User user = (User) query.getSingleResult();
+        if (user == null) {
+            throw new UsernameNotFoundException("User Not Found with email: " + email);
+        }
+        return user;
     }
 
     @Override

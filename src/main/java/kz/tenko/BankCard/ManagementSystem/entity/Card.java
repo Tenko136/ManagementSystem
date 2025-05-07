@@ -1,14 +1,12 @@
 package kz.tenko.BankCard.ManagementSystem.entity;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcType;
-import org.hibernate.annotations.Type;
 import org.hibernate.type.descriptor.jdbc.LongVarcharJdbcType;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.util.Date;
 
 @Entity
 @Table(name = "card")
@@ -22,6 +20,7 @@ public class Card {
     @Column(name = "user_id")
     private Long userId;
 
+    @JsonIgnore
     @Column(name = "number")
     private String number;
 
@@ -71,6 +70,12 @@ public class Card {
 
     public void setNumber(String number) {
         this.number = number;
+    }
+
+    @Transient
+    @JsonProperty("number")
+    public String getMaskedNumber() {
+        return "**** **** **** " + getNumber().substring(number.length() -4);
     }
 
     public LocalDate getExpirationDate() {
