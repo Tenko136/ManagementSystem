@@ -34,6 +34,13 @@ public class CardDAOImpl implements CardDAO {
     }
 
     @Override
+    public List<Card> findCards(Long userId) {
+        Query query = entityManager.createQuery("from Card where userId = :userId");
+        query.setParameter("userId", userId);
+        return query.getResultList();
+    }
+
+    @Override
     public void deleteCard(long id) {
         Query query = entityManager.createQuery("from Card where id =:cardId");
         query.setParameter("cardId", id);

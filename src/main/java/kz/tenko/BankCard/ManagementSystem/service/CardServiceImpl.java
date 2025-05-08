@@ -1,9 +1,12 @@
 package kz.tenko.BankCard.ManagementSystem.service;
 
 import kz.tenko.BankCard.ManagementSystem.DAO.CardDAO;
+import kz.tenko.BankCard.ManagementSystem.DAO.UserDAO;
 import kz.tenko.BankCard.ManagementSystem.entity.Card;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,6 +17,9 @@ public class CardServiceImpl implements CardService {
 
     @Autowired
     private CardDAO cardDAO;
+
+    @Autowired
+    private UserDAO userDAO;
 
     @Override
     @Transactional
@@ -27,8 +33,19 @@ public class CardServiceImpl implements CardService {
     @Override
     @Transactional
     public List<Card> findCards() {
-        SecurityContextHolder.getContext().getAuthentication();
-        return cardDAO.findCards();
+        boolean isAdmin = false;
+        for (GrantedAuthority ga : SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
+            if (ga.getAuthority().endsWith("ADMIN")) {
+                isAdmin = true;
+            }
+        }
+        if (isAdmin) {
+            return cardDAO.findCards();
+        }
+
+        var user = userDAO.findUserByEmail(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
+
+        return cardDAO.findCards(user.getId());
     }
 
     @Override

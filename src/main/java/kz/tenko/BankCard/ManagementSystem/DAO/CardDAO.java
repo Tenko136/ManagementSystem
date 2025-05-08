@@ -10,6 +10,8 @@ public interface CardDAO {
 
     List<Card> findCards();
 
+    List<Card> findCards(Long userId);
+
     void deleteCard(long id);
 
     void blockingCard(String cardNumber);
