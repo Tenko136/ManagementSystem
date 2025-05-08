@@ -20,28 +20,30 @@ public class CardController {
         this.cardService = cardService;
     }
 
-    //SecurityContextHolder.getContext().getAuthentication()
-    @PreAuthorize("hasRole('ADMIN')")
     @GetMapping("/find-cards")
     public List<Card> findAllCards() {   // для админов - все + баланс, для клиентов - только свои + баланс
         return cardService.findCards();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/save-card")
     public void saveCard(Card card) {
         cardService.saveCard(card);
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
     @DeleteMapping("/delete-card/{id}")
     public void deleteCard(@PathVariable long id) {
         cardService.deleteCard(id);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/card-blocking-request")
     public void cardBlockingRequest(String cardNumber) {  // клиент - запрос
         cardService.cardBlockingRequest(cardNumber);
     }
 
+    @PreAuthorize("hasRole('USER')")
     @PostMapping("/transfer")
     public ResponseEntity<?> transferAmount(String cardFrom, String cardTo, long transferAmount) {
         try {

@@ -3,6 +3,7 @@ package kz.tenko.BankCard.ManagementSystem.service;
 import kz.tenko.BankCard.ManagementSystem.DAO.CardDAO;
 import kz.tenko.BankCard.ManagementSystem.entity.Card;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,7 +15,6 @@ public class CardServiceImpl implements CardService {
     @Autowired
     private CardDAO cardDAO;
 
-    //todo
     @Override
     @Transactional
     public void saveCard(Card card) {
@@ -27,6 +27,7 @@ public class CardServiceImpl implements CardService {
     @Override
     @Transactional
     public List<Card> findCards() {
+        SecurityContextHolder.getContext().getAuthentication();
         return cardDAO.findCards();
     }
 

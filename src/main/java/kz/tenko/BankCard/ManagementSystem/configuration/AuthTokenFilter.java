@@ -40,11 +40,6 @@ public class AuthTokenFilter extends OncePerRequestFilter {
             if (jwt != null && jwtUtils.validateJwtToken(jwt)) {
                 String username = jwtUtils.getUsernameFromToken(jwt);
                 User user = userDAO.findUserByEmail(username);
-//                UserDetails userDetails = new org.springframework.security.core.userdetails.User(
-//                        user.getEmail(),
-//                        user.getPassword(),
-//                        List.of(new SimpleGrantedAuthority(user.getRole().name()))
-//                );
                 UserDetails userDetails = org.springframework.security.core.userdetails.User.builder()
                         .username(user.getEmail())
                         .password(user.getPassword())
