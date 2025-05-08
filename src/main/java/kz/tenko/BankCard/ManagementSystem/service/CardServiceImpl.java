@@ -25,13 +25,17 @@ public class CardServiceImpl implements CardService {
     @Transactional
     public void saveCard(Card card) {
         card.setNumber(card.getNumber().replaceAll("\\D", ""));
-        if (card.getNumber().matches("[0-9]{16}")) {
-            cardDAO.saveCard(card);
+        if (!card.getNumber().matches("[0-9]{16}")) {
+            throw new RuntimeException("Некорректный номер");
         }
+        if (card.getNumber() == null || card.getBalance() == null || card.getStatus() == null ||
+        card.getUserId() == null || card.getExpirationDate() == null) {
+            throw  new RuntimeException("Заполните обязательные поля");
+        }
+        cardDAO.saveCard(card);
     }
 
     @Override
-    @Transactional
     public List<Card> findCards() {
         boolean isAdmin = false;
         for (GrantedAuthority ga : SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
@@ -42,14 +46,12 @@ public class CardServiceImpl implements CardService {
         if (isAdmin) {
             return cardDAO.findCards();
         }
-
         var user = userDAO.findUserByEmail(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
-
         return cardDAO.findCards(user.getId());
     }
 
     @Override
-    @Transactional
+//    @Transactional
     public void deleteCard(long id) {
         cardDAO.deleteCard(id);
     }
@@ -57,19 +59,38 @@ public class CardServiceImpl implements CardService {
     @Override
     @Transactional
     public void cardBlockingRequest(String cardNumber) {
+        if (!cardFilter(cardNumber)) {
+            throw new RuntimeException(String.format("Не найдена карта с номером %s у данного пользователя ", cardNumber));
+        }
         cardDAO.blockingCard(cardNumber);
     }
 
     @Override
     @Transactional
     public void transferAmount(String cardFrom, String cardTo, long transferAmount) {
-        long from = cardDAO.findBalance(cardFrom);
-        if ((from - transferAmount) < 0) {
-            throw new RuntimeException("Недостаточно средств");
+        if (cardFilter(cardFrom) && cardFilter(cardTo)) {
+            long from = cardDAO.findBalance(cardFrom);
+            if ((from - transferAmount) < 0) {
+                throw new RuntimeException("Недостаточно средств");
+            }
+            cardDAO.changeBalance(cardFrom, -transferAmount);
+            cardDAO.changeBalance(cardTo, transferAmount);
+            return;
         }
-        cardDAO.changeBalance(cardFrom, -transferAmount);
-        cardDAO.changeBalance(cardTo, transferAmount);
+        throw new RuntimeException("Попытка перевода на стороннюю карту");
     }
 
+
+    public boolean cardFilter(String cardNumber) {
+        boolean isFound = false;
+        for (Card card : findCards()) {
+            if (card.getNumber().equals(cardNumber)) {
+                isFound = true;
+                break;
+            }
+        }
+        return isFound;
+
+    }
 
 }

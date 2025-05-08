@@ -27,8 +27,12 @@ public class UserServiceImpl implements UserService {
     @Override
     @Transactional
     public void saveUser(User user) {
+        if (user.getEmail() == null || user.getRole() == null || user.getName() == null || user.getPassword() == null) {
+            throw new RuntimeException("Заполните обязательные поля");
+        }
+
         if (userDAO.findUserByEmail(user.getEmail()) != null) {
-            throw new RuntimeException("Error: Username is already taken!");
+            throw new RuntimeException("Пользователь с таким email уже существует");
         }
         userDAO.saveUser(user);
     }
