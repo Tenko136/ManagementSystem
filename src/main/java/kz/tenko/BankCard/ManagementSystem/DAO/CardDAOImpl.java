@@ -42,7 +42,7 @@ public class CardDAOImpl implements CardDAO {
 
     @Override
     public void deleteCard(long id) {
-        Query query = entityManager.createQuery("from Card where id =:cardId");
+        Query query = entityManager.createQuery("delete Card where id =:cardId");
         query.setParameter("cardId", id);
         query.executeUpdate();
     }

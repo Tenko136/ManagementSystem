@@ -20,7 +20,6 @@ public class Card {
     @Column(name = "user_id")
     private Long userId;
 
-    @JsonIgnore
     @Column(name = "number")
     private String number;
 

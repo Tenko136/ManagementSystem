@@ -27,7 +27,7 @@ public class CardController {
 
     @PreAuthorize("hasRole('ADMIN')")
     @PutMapping("/save-card")
-    public void saveCard(Card card) {
+    public void saveCard(@RequestBody Card card) {
         cardService.saveCard(card);
     }
 
@@ -40,6 +40,7 @@ public class CardController {
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/card-blocking-request")
     public void cardBlockingRequest(String cardNumber) {  // клиент - запрос
+
         cardService.cardBlockingRequest(cardNumber);
     }
 
