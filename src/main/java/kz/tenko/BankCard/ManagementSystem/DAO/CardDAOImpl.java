@@ -2,9 +2,11 @@ package kz.tenko.BankCard.ManagementSystem.DAO;
 
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.Query;
+import kz.tenko.BankCard.ManagementSystem.DTO.FindCardsRequestDTO;
 import kz.tenko.BankCard.ManagementSystem.entity.Card;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -25,11 +27,16 @@ public class CardDAOImpl implements CardDAO {
     }
 
     @Override
-    public List<Card> findCards() {
-
-        Query query = entityManager
-                .createQuery("from Card");
-
+    public List<Card> findCards(FindCardsRequestDTO findCardsRequestDTO) {
+        Query query = null;
+        if (!StringUtils.hasText(findCardsRequestDTO.getCardNumber())) {
+            query = entityManager.createQuery("from Card");
+        } else {
+         query = entityManager.createQuery("from Card where number = :cardNumber");
+         query.setParameter("cardNumber", findCardsRequestDTO.getCardNumber());
+        }
+        query.setFirstResult((findCardsRequestDTO.getPageNumber() - 1) * findCardsRequestDTO.getPageSize());
+        query.setMaxResults(findCardsRequestDTO.getPageSize());
         return query.getResultList();
     }
 

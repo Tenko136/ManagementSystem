@@ -2,6 +2,7 @@ package kz.tenko.BankCard.ManagementSystem.service;
 
 import kz.tenko.BankCard.ManagementSystem.DAO.CardDAO;
 import kz.tenko.BankCard.ManagementSystem.DAO.UserDAO;
+import kz.tenko.BankCard.ManagementSystem.DTO.FindCardsRequestDTO;
 import kz.tenko.BankCard.ManagementSystem.entity.Card;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
@@ -36,7 +37,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-    public List<Card> findCards() {
+    public List<Card> findCards(FindCardsRequestDTO findCardsRequestDTO) {
         boolean isAdmin = false;
         for (GrantedAuthority ga : SecurityContextHolder.getContext().getAuthentication().getAuthorities()) {
             if (ga.getAuthority().endsWith("ADMIN")) {
@@ -44,7 +45,7 @@ public class CardServiceImpl implements CardService {
             }
         }
         if (isAdmin) {
-            return cardDAO.findCards();
+            return cardDAO.findCards(findCardsRequestDTO);
         }
         var user = userDAO.findUserByEmail(((User) SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getUsername());
         return cardDAO.findCards(user.getId());
@@ -83,7 +84,9 @@ public class CardServiceImpl implements CardService {
 
     public boolean cardFilter(String cardNumber) {
         boolean isFound = false;
-        for (Card card : findCards()) {
+        FindCardsRequestDTO findCardsRequestDTO = new FindCardsRequestDTO();
+        findCardsRequestDTO.setCardNumber(cardNumber);
+        for (Card card : findCards(findCardsRequestDTO)) {
             if (card.getNumber().equals(cardNumber)) {
                 isFound = true;
                 break;

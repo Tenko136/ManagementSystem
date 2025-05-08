@@ -1,5 +1,6 @@
 package kz.tenko.BankCard.ManagementSystem.controller;
 
+import kz.tenko.BankCard.ManagementSystem.DTO.FindCardsRequestDTO;
 import kz.tenko.BankCard.ManagementSystem.entity.Card;
 import kz.tenko.BankCard.ManagementSystem.service.CardService;
 import org.springframework.http.HttpStatus;
@@ -21,8 +22,8 @@ public class CardController {
     }
 
     @GetMapping("/find-cards")
-    public List<Card> findAllCards() {   // для админов - все + баланс, для клиентов - только свои + баланс
-        return cardService.findCards();
+    public List<Card> findAllCards(@RequestBody FindCardsRequestDTO findCardsRequestDTO) {
+        return cardService.findCards(findCardsRequestDTO);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -39,7 +40,7 @@ public class CardController {
 
     @PreAuthorize("hasRole('USER')")
     @PostMapping("/card-blocking-request")
-    public void cardBlockingRequest(String cardNumber) {  // клиент - запрос
+    public void cardBlockingRequest(String cardNumber) {
 
         cardService.cardBlockingRequest(cardNumber);
     }
