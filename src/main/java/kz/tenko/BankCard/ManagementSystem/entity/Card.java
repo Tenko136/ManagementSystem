@@ -1,6 +1,5 @@
 package kz.tenko.BankCard.ManagementSystem.entity;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 import org.hibernate.annotations.JdbcType;
