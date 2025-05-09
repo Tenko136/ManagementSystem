@@ -16,11 +16,13 @@ import java.util.List;
 @Service
 public class CardServiceImpl implements CardService {
 
-    @Autowired
-    private CardDAO cardDAO;
+    private final CardDAO cardDAO;
+    private final UserDAO userDAO;
 
-    @Autowired
-    private UserDAO userDAO;
+    public CardServiceImpl(CardDAO cardDAO, UserDAO userDAO) {
+        this.cardDAO = cardDAO;
+        this.userDAO = userDAO;
+    }
 
     @Override
     @Transactional
