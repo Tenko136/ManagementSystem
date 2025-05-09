@@ -8,9 +8,11 @@ import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mockito;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.User;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -49,5 +51,24 @@ public class CardTests {
         verify(cardDAO, times(1)).findCards(Mockito.any(FindCardsRequestDTO.class));
     }
 
+    @Test
+    public void findCardsForUserTest() {
+        Authentication authentication = Mockito.mock(Authentication.class);
+        List<SimpleGrantedAuthority> grantedAuthorities = new ArrayList<>();
+        grantedAuthorities.add(new SimpleGrantedAuthority("USER"));
+        Mockito.when(authentication.getAuthorities()).thenReturn((Collection) grantedAuthorities);
+        SecurityContext securityContext = Mockito.mock(SecurityContext.class);
+        Mockito.when(securityContext.getAuthentication()).thenReturn(authentication);
+        SecurityContextHolder.setContext(securityContext);
+        User user = new User("UserName", "userName", grantedAuthorities);
+        Mockito.when(authentication.getPrincipal()).thenReturn(user);
+        var userEntity = new kz.tenko.BankCard.ManagementSystem.entity.User();
+        userEntity.setId(1L);
+        Mockito.when(userDAO.findUserByEmail(Mockito.any())).thenReturn(userEntity);
+
+        underTest.findCards(new FindCardsRequestDTO());
+
+        verify(cardDAO, times(1)).findCards(userEntity.getId());
+    }
 
 }
