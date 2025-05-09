@@ -71,6 +71,7 @@ public class CardServiceImpl implements CardService {
     @Override
     @Transactional
     public void transferAmount(String cardFrom, String cardTo, long transferAmount) {
+
         if (cardFilter(cardFrom) && cardFilter(cardTo)) {
             long from = cardDAO.findBalance(cardFrom);
             if ((from - transferAmount) < 0) {
