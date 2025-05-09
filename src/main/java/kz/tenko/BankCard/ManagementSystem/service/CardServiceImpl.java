@@ -54,7 +54,7 @@ public class CardServiceImpl implements CardService {
     }
 
     @Override
-//    @Transactional
+    @Transactional
     public void deleteCard(long id) {
         cardDAO.deleteCard(id);
     }
