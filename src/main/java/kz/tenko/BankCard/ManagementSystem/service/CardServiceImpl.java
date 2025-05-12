@@ -4,7 +4,6 @@ import kz.tenko.BankCard.ManagementSystem.DAO.CardDAO;
 import kz.tenko.BankCard.ManagementSystem.DAO.UserDAO;
 import kz.tenko.BankCard.ManagementSystem.DTO.FindCardsRequestDTO;
 import kz.tenko.BankCard.ManagementSystem.entity.Card;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.User;

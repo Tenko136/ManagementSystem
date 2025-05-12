@@ -17,14 +17,14 @@ public class User {
     private String name;
 
     @Column(name = "email")
-    String email;
+    private String email;
 
     @Column(name = "password")
-    String password;
+    private String password;
 
     @Column(name = "role")
     @JdbcType(VarcharJdbcType.class)
-    Role role;
+    private Role role;
 
     public User() {
     }
